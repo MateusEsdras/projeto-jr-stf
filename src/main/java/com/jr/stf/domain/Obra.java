@@ -12,8 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Obra implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -81,6 +84,12 @@ public class Obra implements Serializable{
 	}
 	public void setExposicao(Date exposicao) {
 		this.exposicao = exposicao;
+	}
+	public List<Autor> getAutores() {
+		return autores;
+	}
+	public void setAutores(List<Autor> autores) {
+		this.autores = autores;
 	}
 	
 	@Override
