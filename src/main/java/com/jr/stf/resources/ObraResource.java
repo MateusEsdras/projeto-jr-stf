@@ -10,40 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.jr.stf.domain.Autor;
-import com.jr.stf.services.AutorService;
+import com.jr.stf.domain.Obra;
+import com.jr.stf.services.ObraService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value="/autor")
-public class AutorResource {
+@RequestMapping(value="/obra")
+public class ObraResource {
 	
 	@Autowired
-	private AutorService autorService;
-
+	private ObraService obraService;
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Autor> find(@PathVariable Integer id){
-		Autor obj = autorService.find(id);
+	public ResponseEntity<Obra> find(@PathVariable Integer id){
+		Obra obj = obraService.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Autor obj){
-		obj = autorService.insert(obj);
+	public ResponseEntity<Void> insert(@Valid @RequestBody Obra obj){
+		obj = obraService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
-	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody Autor obj, @PathVariable Integer id){
-		obj.setId(id);
-		obj = autorService.update(obj);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id){
-		autorService.delete(id);
-		return ResponseEntity.noContent().build();
 	}
 }
