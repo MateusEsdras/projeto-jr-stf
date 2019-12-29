@@ -105,6 +105,7 @@ public class Autor implements Serializable{
 	public void setObras(List<Obra> obras) {
 		this.obras = obras;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

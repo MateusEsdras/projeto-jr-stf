@@ -26,7 +26,7 @@ public class AutorService {
 	}
 	
 	public List<Autor> findAll(){
-		return autorRepository.findAll();
+		return autorRepository.findAllAutores();
 	}
 	
 	@Transactional

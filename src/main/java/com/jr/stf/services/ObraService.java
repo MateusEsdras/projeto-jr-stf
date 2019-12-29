@@ -1,10 +1,14 @@
 package com.jr.stf.services;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.jr.stf.domain.Obra;
 import com.jr.stf.repositories.AutorRepository;
 import com.jr.stf.repositories.ObraRepository;
+import com.jr.stf.services.exceptions.DataIntegrityException;
 import com.jr.stf.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -21,16 +25,27 @@ public class ObraService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Obra não encontrada!" + Obra.class.getName()));
 	}
 	
+	public List<Obra> findAll(){
+		return obraRepository.findAllObras();
+	}
+	
+	@Transactional
 	public Obra insert(Obra obj) {
-		obj.setId(null);
-		obj.setNome(obj.getNome());
-		obj.setDescricao(obj.getDescricao());
-		obj.setPublicacao(obj.getPublicacao());
-		obj.setExposicao(obj.getExposicao());
-		obj.setAutores(obj.getAutores());
-		
-		//autorRepository.saveAll(obj.getAutores());
+		autorRepository.saveAll(obj.getAutores());
 		obj = obraRepository.save(obj);
 		return obj;
+	}
+	
+	public Obra update(Obra obj) {
+		autorRepository.saveAll(obj.getAutores());
+		return obraRepository.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		try {
+			obraRepository.deleteById(id);
+		} catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("RELACIONAMENTOS!");
+		}
 	}
 }

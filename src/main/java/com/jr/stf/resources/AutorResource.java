@@ -1,5 +1,7 @@
 package com.jr.stf.resources;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jr.stf.domain.Autor;
+import com.jr.stf.dto.AutorDTO;
 import com.jr.stf.services.AutorService;
 
 @CrossOrigin
@@ -25,6 +28,13 @@ public class AutorResource {
 	public ResponseEntity<Autor> find(@PathVariable Integer id){
 		Autor obj = autorService.find(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value="/all", method=RequestMethod.GET)
+	public ResponseEntity<List<AutorDTO>> findAll(){
+		List<Autor> list = autorService.findAll();
+		List<AutorDTO> listDTO = list.stream().map(obj -> new AutorDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
