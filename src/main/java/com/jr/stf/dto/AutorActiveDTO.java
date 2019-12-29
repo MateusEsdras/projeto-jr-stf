@@ -1,10 +1,13 @@
 package com.jr.stf.dto;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jr.stf.domain.Autor;
 
-public class AutorDTO implements Serializable{
+public class AutorActiveDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
@@ -17,9 +20,11 @@ public class AutorDTO implements Serializable{
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date nascimento;
 	
-	public AutorDTO() {
+	private List<ObraDTO> obras = new ArrayList<>();
+	
+	public AutorActiveDTO() {
 	}
-	public AutorDTO(Autor obj) {
+	public AutorActiveDTO(Autor obj) {
 		id = obj.getId();
 		cpf = obj.getCpf();
 		nome = obj.getNome();
@@ -27,6 +32,7 @@ public class AutorDTO implements Serializable{
 		email = obj.getEmail();
 		paisOrigem = obj.getPaisOrigem();
 		nascimento = obj.getNascimento();
+		obras = obj.getObras().stream().map(newObj -> new ObraDTO(newObj)).collect(Collectors.toList());
 	}
 	
 	public Integer getId() {
@@ -70,5 +76,11 @@ public class AutorDTO implements Serializable{
 	}
 	public void setNascimento(Date nascimento) {
 		this.nascimento = nascimento;
+	}
+	public List<ObraDTO> getObras() {
+		return obras;
+	}
+	public void setObras(List<ObraDTO> obras) {
+		this.obras = obras;
 	}
 }

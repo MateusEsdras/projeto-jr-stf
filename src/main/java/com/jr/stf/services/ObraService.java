@@ -37,6 +37,8 @@ public class ObraService {
 	}
 	
 	public Obra update(Obra obj) {
+		Obra oldObj = find(obj.getId());
+		obj.getAutores().addAll(oldObj.getAutores());
 		autorRepository.saveAll(obj.getAutores());
 		return obraRepository.save(obj);
 	}

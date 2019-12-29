@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jr.stf.domain.Obra;
-import com.jr.stf.dto.ObraDTO;
+import com.jr.stf.dto.ObraActiveDTO;
 import com.jr.stf.services.ObraService;
 
 @CrossOrigin
@@ -25,15 +25,16 @@ public class ObraResource {
 	private ObraService obraService;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Obra> find(@PathVariable Integer id){
+	public ResponseEntity<ObraActiveDTO> find(@PathVariable Integer id){
 		Obra obj = obraService.find(id);
-		return ResponseEntity.ok().body(obj);
+		ObraActiveDTO objDTO = new ObraActiveDTO(obj);
+		return ResponseEntity.ok().body(objDTO);
 	}
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public ResponseEntity<List<ObraDTO>> findAll(){
+	public ResponseEntity<List<ObraActiveDTO>> findAll(){
 		List<Obra> list = obraService.findAll();
-		List<ObraDTO> listDTO = list.stream().map(obj -> new ObraDTO(obj)).collect(Collectors.toList());
+		List<ObraActiveDTO> listDTO = list.stream().map(obj -> new ObraActiveDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 

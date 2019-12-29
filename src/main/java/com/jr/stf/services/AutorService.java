@@ -35,7 +35,6 @@ public class AutorService {
 		obj = autorRepository.save(obj);
 		obraRepository.saveAll(obj.getObras());
 		return obj;
-		//return autorRepository.save(obj);
 	}
 	
 	public Autor update(Autor obj) {

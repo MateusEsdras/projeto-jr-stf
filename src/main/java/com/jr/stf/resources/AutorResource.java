@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jr.stf.domain.Autor;
-import com.jr.stf.dto.AutorDTO;
+import com.jr.stf.dto.AutorActiveDTO;
 import com.jr.stf.services.AutorService;
 
 @CrossOrigin
@@ -25,15 +25,16 @@ public class AutorResource {
 	private AutorService autorService;
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Autor> find(@PathVariable Integer id){
+	public ResponseEntity<AutorActiveDTO> find(@PathVariable Integer id){
 		Autor obj = autorService.find(id);
-		return ResponseEntity.ok().body(obj);
+		AutorActiveDTO objDTO = new AutorActiveDTO(obj);
+		return ResponseEntity.ok().body(objDTO);
 	}
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public ResponseEntity<List<AutorDTO>> findAll(){
+	public ResponseEntity<List<AutorActiveDTO>> findAll(){
 		List<Autor> list = autorService.findAll();
-		List<AutorDTO> listDTO = list.stream().map(obj -> new AutorDTO(obj)).collect(Collectors.toList());
+		List<AutorActiveDTO> listDTO = list.stream().map(obj -> new AutorActiveDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
