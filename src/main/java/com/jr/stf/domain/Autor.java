@@ -32,6 +32,9 @@ public class Autor implements Serializable{
 	private String cpf;
 	
 	@Column
+	private String senha;
+	
+	@Column
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date nascimento;
 	
@@ -46,12 +49,13 @@ public class Autor implements Serializable{
 	
 	public Autor() {
 	}
-	public Autor(Integer id, String nome, String email, String cpf, Date nascimento, String paisOrigem, String sexo) {
+	public Autor(Integer id, String nome, String email, String cpf, String senha, Date nascimento, String paisOrigem, String sexo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
+		this.senha = senha;
 		this.nascimento = nascimento;
 		this.paisOrigem = paisOrigem;
 		this.sexo = sexo;
@@ -80,6 +84,12 @@ public class Autor implements Serializable{
 	}
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	public Date getNascimento() {
 		return nascimento;

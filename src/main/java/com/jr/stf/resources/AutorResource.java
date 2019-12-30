@@ -52,6 +52,18 @@ public class AutorResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value="/add/{idAutor}/{idObra}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> addObra(@PathVariable Integer idAutor, @PathVariable Integer idObra){
+		autorService.addObra(idAutor, idObra);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/remove/{idAutor}/{idObra}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> removeObra(@PathVariable Integer idAutor, @PathVariable Integer idObra){
+		autorService.removeObra(idAutor, idObra);
+		return ResponseEntity.noContent().build();
+	}
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		autorService.delete(id);

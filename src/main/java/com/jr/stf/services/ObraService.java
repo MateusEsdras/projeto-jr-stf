@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.jr.stf.domain.Autor;
 import com.jr.stf.domain.Obra;
 import com.jr.stf.repositories.AutorRepository;
 import com.jr.stf.repositories.ObraRepository;
@@ -19,6 +20,9 @@ public class ObraService {
 	
 	@Autowired
 	private AutorRepository autorRepository;
+	
+	@Autowired
+	private AutorService autorService;
 	
 	public Obra find(Integer id) {
 		Optional<Obra> obj = obraRepository.findById(id);
@@ -47,7 +51,25 @@ public class ObraService {
 		try {
 			obraRepository.deleteById(id);
 		} catch(DataIntegrityViolationException e) {
-			throw new DataIntegrityException("RELACIONAMENTOS!");
+			throw new DataIntegrityException("Ocorreu um erro por conta dos relacionamentos desta obra");
+		}
+	}
+	
+	public void addAutor(Integer idObra, Integer idAutor) {
+		Autor autor = autorService.find(idAutor);
+		Obra obra = find(idObra);
+		obra.addAutor(autor);
+		obraRepository.save(obra);
+	}
+	
+	public void removeAutor(Integer idObra, Integer idAutor) {
+		Autor autor = autorService.find(idAutor);
+		Obra obra = find(idObra);
+		obra.removeAutor(autor);
+		obraRepository.save(obra);
+		
+		if(obra.getAutores().size() == 0) {
+			delete(obra.getId());
 		}
 	}
 }

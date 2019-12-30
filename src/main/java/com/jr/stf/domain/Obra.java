@@ -91,6 +91,12 @@ public class Obra implements Serializable{
 	public void setAutores(List<Autor> autores) {
 		this.autores = autores;
 	}
+	public void addAutor(Autor autor) {
+		autores.add(autor);
+	}
+	public void removeAutor(Autor autor) {
+		autores.remove(autor);
+	}
 	
 	@Override
 	public int hashCode() {

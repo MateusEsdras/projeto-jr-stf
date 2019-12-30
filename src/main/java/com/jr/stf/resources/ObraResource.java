@@ -52,6 +52,18 @@ public class ObraResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value="/add/{idObra}/{idAutor}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> addAutor(@PathVariable Integer idObra, @PathVariable Integer idAutor){
+		obraService.addAutor(idObra, idAutor);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/remove/{idObra}/{idAutor}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> removeAutor(@PathVariable Integer idObra, @PathVariable Integer idAutor){
+		obraService.removeAutor(idObra, idAutor);
+		return ResponseEntity.noContent().build();
+	}
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		obraService.delete(id);
