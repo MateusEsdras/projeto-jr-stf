@@ -26,7 +26,7 @@ public class ObraService {
 	
 	public Obra find(Integer id) {
 		Optional<Obra> obj = obraRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Obra não encontrada!" + Obra.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Obra não encontrada!"));
 	}
 	
 	public List<Obra> findAll(){

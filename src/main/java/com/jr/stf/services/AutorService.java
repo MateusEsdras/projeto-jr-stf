@@ -10,7 +10,9 @@ import com.jr.stf.domain.Obra;
 import com.jr.stf.repositories.AutorRepository;
 import com.jr.stf.repositories.ObraRepository;
 import com.jr.stf.services.exceptions.DataIntegrityException;
+import com.jr.stf.services.exceptions.InvalidCpfException;
 import com.jr.stf.services.exceptions.ObjectNotFoundException;
+import com.jr.stf.services.validation.BR;
 
 @Service
 public class AutorService {
@@ -26,7 +28,7 @@ public class AutorService {
 	
 	public Autor find(Integer id) {
 		Optional<Autor> obj = autorRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Autor não encontrado!" + Autor.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Autor não encontrado"));
 	}
 	
 	public List<Autor> findAll(){
@@ -36,9 +38,13 @@ public class AutorService {
 	@Transactional
 	public Autor insert(Autor obj) {
 		obj.setId(null);
-		obj = autorRepository.save(obj);
-		obraRepository.saveAll(obj.getObras());
-		return obj;
+		if(BR.isValidCPF(obj.getCpf())) {
+			obj = autorRepository.save(obj);
+			obraRepository.saveAll(obj.getObras());
+			return obj;
+		} else {
+			throw new InvalidCpfException("O CPF informado é inválido");
+		}
 	}
 	
 	public Autor update(Autor obj) {
