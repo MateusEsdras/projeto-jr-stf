@@ -12,4 +12,7 @@ public interface AutorRepository extends JpaRepository<Autor, Integer>{
 	@Transactional
 	@Query(value="SELECT * FROM Autor", nativeQuery=true)
 	List<Autor> findAllAutores();
+	
+	@Transactional(readOnly=true)
+	Autor findByEmail(String email);
 }

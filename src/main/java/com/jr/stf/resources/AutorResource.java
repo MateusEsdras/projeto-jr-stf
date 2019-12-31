@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jr.stf.domain.Autor;
 import com.jr.stf.dto.AutorActiveDTO;
+import com.jr.stf.dto.CredenciaisDTO;
 import com.jr.stf.services.AutorService;
 
 @CrossOrigin
@@ -41,6 +42,13 @@ public class AutorResource {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody Autor obj){
 		obj = autorService.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public ResponseEntity<Void> login(@Valid @RequestBody CredenciaisDTO credenciais) {
+		Autor obj = autorService.validateSenha(credenciais);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jr.stf.domain.Autor;
 import com.jr.stf.domain.Obra;
+import com.jr.stf.dto.CredenciaisDTO;
 import com.jr.stf.repositories.AutorRepository;
 import com.jr.stf.repositories.ObraRepository;
 import com.jr.stf.services.exceptions.DataIntegrityException;
-import com.jr.stf.services.exceptions.InvalidCpfException;
+import com.jr.stf.services.exceptions.InvalidException;
 import com.jr.stf.services.exceptions.ObjectNotFoundException;
 import com.jr.stf.services.validation.BR;
 
@@ -35,15 +36,31 @@ public class AutorService {
 		return autorRepository.findAllAutores();
 	}
 	
+	private Autor findByEmail(String email) {
+		Autor autor = autorRepository.findByEmail(email);
+		if(autor == null) {
+			throw new InvalidException("Credenciais inválidas");
+		}
+		return autor;
+	}
+	
+	public Autor validateSenha(CredenciaisDTO credenciais) {
+		Autor autor = findByEmail(credenciais.getEmail());
+		if(!autor.getSenha().equals(credenciais.getSenha())) {
+			throw new InvalidException("Credenciais inválidas");
+		}
+		return autor;
+	}
+	
 	@Transactional
 	public Autor insert(Autor obj) {
-		obj.setId(null);
 		if(BR.isValidCPF(obj.getCpf())) {
+			obj.setId(null);
 			obj = autorRepository.save(obj);
 			obraRepository.saveAll(obj.getObras());
 			return obj;
 		} else {
-			throw new InvalidCpfException("O CPF informado é inválido");
+			throw new InvalidException("O CPF informado é inválido");
 		}
 	}
 	
