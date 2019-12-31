@@ -40,17 +40,16 @@ public class AutorResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Autor obj){
+	public ResponseEntity<Autor> insert(@Valid @RequestBody Autor obj){
 		obj = autorService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public ResponseEntity<Void> login(@Valid @RequestBody CredenciaisDTO credenciais) {
+	public ResponseEntity<Autor> login(@Valid @RequestBody CredenciaisDTO credenciais) {
 		Autor obj = autorService.validateSenha(credenciais);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
